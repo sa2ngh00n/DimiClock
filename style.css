@@ -1,0 +1,50 @@
+@import url('https://fonts.googleapis.com/css2?family=Inria+Sans:ital,wght@0,300;0,400;0,700;1,300;1,400;1,700&display=swap');
+
+body {
+    background-color: black;
+    font-family: "Inria Sans", sans-serif;
+}
+
+h1 {
+    color: white;
+    font-weight: 700;
+    font-style: normal;
+    text-align: center;
+}
+
+.clock {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#clock-nums {
+    font-size: 300px;
+}
+
+.container-bars {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 20px; /* progress-bars와의 간격 조정 */
+}
+
+.progress-bars {
+    height: 20px;
+    border-radius: 40px;
+}
+
+#progress-bar-white {
+    background-color: white;
+    width: 1200px;
+}
+
+#progress-bar-green {
+    background-color: #2BBC99;
+}
+
+#today-percentage {
+    font-size: 32px;
+    text-align: center;
+    margin-top: 20px; /* clock-nums와의 간격 조정 */
+}
