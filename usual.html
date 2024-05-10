@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dimi Clock</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inria+Sans:ital,wght@0,300;0,400;0,700;1,300;1,400;1,700&display=swap');
+
+        body {background-color: black;font-family: "Inria Sans", sans-serif;margin: 0;}
+
+        h1 {color: white;font-weight: 700;font-style: normal;text-align: center;}
+
+        .clock {display: flex;justify-content: center;align-items: center;margin-top: 20px;}
+
+        #clock-nums {font-size: 10vw;text-align: center;}
+
+        .container-bars {display: flex;justify-content: center;align-items: center;margin-top: 10px;}
+
+        .progress-bars {height: 20px;border-radius: 40px;width: 70%;max-width: 1200px;margin: 0 auto;}
+
+        #progress-bar-white {background-color: white;}
+
+        #progress-bar-green {background-color: #2BBC99;}
+
+        #today-percentage {font-size: 3vw;text-align: center;margin-top: 10px;}
+
+        #made-by {font-size: 1.5vw;margin-top: 10vw;}
+        
+        a {text-decoration: none;color: white;}
+    </style>
+</head>
+<body>
+    <div class="clock">
+        <h1 id="clock-nums"></h1>
+    </div>
+    <h1 id="today-percentage"></h1>
+    <div class="container-bars">
+        <div class="progress-bars" id="progress-bar-white">
+            <div class="progress-bars" id="progress-bar-green"></div>
+        </div>
+    </div>
+    <h1 id="time-name"></h1>
+    <h1 id = "made-by">
+        <a href="remain.html" title="잔류시 시간표로 이동">
+            made by 23HD Sa2ngH00n(평시)
+        </a>
+    </h1>
+    <script>
+        const timeRanges = [
+        { start: 6 * 3600 + 30 * 60, end: 7 * 3600 + 20 * 60, label: "아침 기상 / 인원 점검" },
+        { start: 7 * 3600 + 20 * 60, end: 8 * 3600, label: "아침 식사" },
+        { start: 8 * 3600, end: 8 * 3600 + 40 * 60, label: "아침 프로그램" },
+        { start: 8 * 3600 + 40 * 60, end: 8 * 3600 + 50 * 60, label: "주번 활동" },
+        { start: 8 * 3600 + 50 * 60, end: 8 * 3600 + 55 * 60, label: "담임 조회" },
+        { start: 8 * 3600 + 55 * 60, end: 9 * 3600, label: "이동 및 수업 준비" },
+        { start: 9 * 3600, end: 10 * 3600, label: "1교시" },
+        { start: 10 * 3600, end: 11 * 3600, label: "2교시" },
+        { start: 11 * 3600, end: 12 * 3600, label: "3교시" },
+        { start: 12 * 3600, end: 12 * 3600 + 50 * 60, label: "4교시" },
+        { start: 12 * 3600 + 50 * 60, end: 13 * 3600 + 50 * 60, label: "점심 시간" },
+        { start: 13 * 3600 + 50 * 60, end: 14 * 3600 + 50 * 60, label: "5교시" },
+        { start: 14 * 3600 + 50 * 60, end: 15 * 3600 + 50 * 60, label: "6교시" },
+        { start: 15 * 3600 + 50 * 60, end: 16 * 3600 + 40 * 60, label: "7교시" },
+        { start: 16 * 3600 + 40 * 60, end: 17 * 3600, label: "청소 및 종례" },
+        { start: 17 * 3600, end: 17 * 3600 + 10 * 60, label: "방과후 수업 준비" },
+        { start: 17 * 3600 + 10 * 60, end: 18 * 3600 + 35 * 60, label: "방과후 수업" },
+        { start: 18 * 3600 + 35 * 60, end: 19 * 3600 + 50 * 60, label: "저녁 식사" },
+        { start: 19 * 3600 + 50 * 60, end: 21 * 3600 + 10 * 60, label: "야자 1타임" },
+        { start: 21 * 3600 + 10 * 60, end: 21 * 3600 + 30 * 60, label: "휴식 시간" },
+        { start: 21 * 3600 + 30 * 60, end: 22 * 3600 + 50 * 60, label: "야자 2타임" },
+        { start: 22 * 3600 + 50 * 60, end: 24 * 3600, label: "생활관 이동" },
+        { start: 0, end: 6 * 3600 + 30 * 60, label: "취침" }
+    ];
+
+    const padZero = num => (num < 10 ? "0" : "") + num;
+
+    const updateClockAndBar = () => {
+        const now = new Date();
+        const hours = padZero(now.getHours());
+        const minutes = padZero(now.getMinutes());
+        const seconds = padZero(now.getSeconds());
+        const timeString = `${hours} : ${minutes} : ${seconds}`;
+        document.getElementById("clock-nums").textContent = timeString;
+        const totalSeconds = now.getHours() * 3600 + now.getMinutes() * 60 + now.getSeconds();
+        const totalPercentage = ((totalSeconds / 86400) * 100).toFixed(2);
+        document.getElementById("progress-bar-green").style.width = `${totalPercentage}%`;
+        const percentString = `오늘 하루 ${totalPercentage}%가 지났어요!`;
+        document.getElementById("today-percentage").textContent = percentString;
+        updateTimeName(totalSeconds);   
+    }
+
+    const updateTimeName = totalSeconds => {
+        for (const range of timeRanges) {
+            if (totalSeconds >= range.start && totalSeconds < range.end) {
+                document.getElementById("time-name").textContent = `| ${range.label} ⌛ (${range.end -totalSeconds} 초 남음)|`;
+                return; 
+            }
+        }
+    }
+
+    setInterval(updateClockAndBar, 1000);
+</script>
+</body>
+</html>
