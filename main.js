@@ -44,7 +44,7 @@ const updateClockAndBar = () => {
 const updateTimeName = totalSeconds => {
     for (const range of timeRanges) {
         if (totalSeconds >= range.start && totalSeconds < range.end) {
-            document.getElementById("time-name").textContent = `| ${range.label} ⌛ (${range.end -totalSeconds} 초 남음)|`;
+            document.getElementById("time-name").textContent = `| ${range.label} ⌛ (${range.end - totalSeconds} 초 남음)|`;
             return; 
         }
     }
