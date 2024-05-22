@@ -107,7 +107,9 @@
         }
 
         window.onload = function () {
-            window.location.href = isWeekend() ? "remain.html";
+            if (isWeekend() == True){
+                window.location.href = isWeekend();    
+            }
         }     
 </script>
 </body>
